@@ -1,8 +1,6 @@
-package domain;
+package com.krasikov.domain;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Tariff {

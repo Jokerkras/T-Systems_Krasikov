@@ -1,4 +1,4 @@
-package domain;
+package com.krasikov.domain;
 
 public class Option {
     private String title;

@@ -1,4 +1,4 @@
-package domain;
+package com.krasikov.domain;
 
 import java.time.LocalDate;
 import java.util.HashSet;
