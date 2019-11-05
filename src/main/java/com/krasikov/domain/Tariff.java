@@ -1,13 +1,36 @@
 package com.krasikov.domain;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Table(name = "TARIFF")
 public class Tariff {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "tariff_id")
+    private Long id;
+
     private String title;
+
     private double price;
+
+    @Column(name = "connection_price")
     private double connectionPrice;
+
+    @Column(name = "possible_options")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "tariff_option", joinColumns = {
+        @JoinColumn(name = "tariff_id", nullable = false)},
+            inverseJoinColumns = {
+                  @JoinColumn(name = "option_id", nullable = false)
+    })
     private Set<Option> possibleOptions = new HashSet<Option>();
+
+    @OneToMany(mappedBy = "tariff")
+    private Set<Contract> conracts = new HashSet<Contract>();
 
     public Tariff(String title, double price, HashSet<Option> possibleOptions) {
         this.title = title;

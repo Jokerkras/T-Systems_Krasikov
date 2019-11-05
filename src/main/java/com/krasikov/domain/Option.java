@@ -1,9 +1,30 @@
 package com.krasikov.domain;
 
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "OPTION")
 public class Option {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "option_id")
+    private Long id;
+
     private String title;
+
     private double price;
+
+    @Column(name = "connection_price")
     private double connectionPrice;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "possible_options")
+    @Column(name = "possible_tariffs")
+    private Set<Tariff> possibleTariffs = new HashSet<Tariff>();
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "options")
+    private Set<Contract> contracts = new HashSet<Contract>();
 
     public Option(String title, double price, double connectionPrice) {
         this.title = title;
@@ -33,5 +54,18 @@ public class Option {
 
     public void setConnectionPrice(double connectionPrice) {
         this.connectionPrice = connectionPrice;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("id = %d, title = %s, price = %f, connection price = %f", id, title, price, connectionPrice);
     }
 }

@@ -1,17 +1,33 @@
 package com.krasikov.domain;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Client {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "client_id")
+    private Long id;
+
     private String name;
+
     private String surname;
+
     private LocalDate birthday;
+
     private String email;
+
     private String passport;
+
     private String address;
+
     private Set<Long> numbers = new HashSet<Long>();
+
     private String password;
 
     public Client(String name, String surname, LocalDate birthday, String email, String passport, String address, HashSet<Long> numbers, String password) {

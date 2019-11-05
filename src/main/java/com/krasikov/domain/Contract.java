@@ -1,11 +1,27 @@
 package com.krasikov.domain;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Contract {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "contract_id")
+    private Long id;
+
     private Long number;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_tariff")
     private Tariff tariff;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "contract_option", joinColumns = {
+            @JoinColumn(name = "contract_id", nullable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "option_id", nullable = false)
+    })
     private Set<Option> options = new HashSet<Option>();
 
     public Contract(Long number, Tariff tariff, HashSet<Option> options) {
