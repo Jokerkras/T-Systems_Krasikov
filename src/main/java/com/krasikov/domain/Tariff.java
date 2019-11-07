@@ -20,12 +20,12 @@ public class Tariff {
     @Column(name = "connection_price")
     private double connectionPrice;
 
-    @Column(name = "possible_options")
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "tariff_option", joinColumns = {
-        @JoinColumn(name = "tariff_id", nullable = false)},
-            inverseJoinColumns = {
-                  @JoinColumn(name = "option_id", nullable = false)
+    @JoinTable(name = "tariff_option",
+            joinColumns = {
+                @JoinColumn(name = "tariff_id", nullable = false)},
+                        inverseJoinColumns = {
+                                @JoinColumn(name = "option_id", nullable = false)
     })
     private Set<Option> possibleOptions = new HashSet<Option>();
 
@@ -36,6 +36,10 @@ public class Tariff {
         this.title = title;
         this.price = price;
         this.possibleOptions = possibleOptions;
+    }
+
+    public Tariff() {
+
     }
 
     public void addOption(Option option) {

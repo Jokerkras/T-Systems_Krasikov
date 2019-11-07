@@ -19,7 +19,7 @@ public class Option {
     @Column(name = "connection_price")
     private double connectionPrice;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "possible_options")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "possibleOptions")
     @Column(name = "possible_tariffs")
     private Set<Tariff> possibleTariffs = new HashSet<Tariff>();
 
@@ -31,6 +31,8 @@ public class Option {
         this.price = price;
         this.connectionPrice = connectionPrice;
     }
+
+    public Option() { }
 
     public String getTitle() {
         return title;

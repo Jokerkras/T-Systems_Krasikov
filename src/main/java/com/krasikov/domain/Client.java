@@ -1,13 +1,12 @@
 package com.krasikov.domain;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Table(name = "CLIENT")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,27 +25,33 @@ public class Client {
 
     private String address;
 
-    private Set<Long> numbers = new HashSet<Long>();
+    @OneToMany(mappedBy = "client")
+    private Set<MobileNumber> mobileNumbers = new HashSet<>();
+
+    @OneToMany(mappedBy = "client")
+    private Set<Contract> contracts = new HashSet<>();
 
     private String password;
 
-    public Client(String name, String surname, LocalDate birthday, String email, String passport, String address, HashSet<Long> numbers, String password) {
+    public Client(String name, String surname, LocalDate birthday, String email, String passport, String address, HashSet<MobileNumber> numbers, String password) {
         this.name = name;
         this.surname = surname;
         this.birthday = birthday;
         this.email = email;
         this.passport = passport;
         this.address = address;
-        this.numbers = numbers;
+        this.mobileNumbers = numbers;
         this.password = password;
     }
 
-    public void addNumber(Long number) {
-        numbers.add(number);
+    public Client() { }
+
+    public void addNumber(MobileNumber number) {
+        mobileNumbers.add(number);
     }
 
-    public boolean removeNumber(Long number) {
-        return numbers.remove(number);
+    public boolean removeNumber(MobileNumber mobileNumber) {
+        return mobileNumbers.remove(mobileNumber);
     }
 
     public String getName() {
@@ -97,12 +102,12 @@ public class Client {
         this.address = address;
     }
 
-    public Set<Long> getNumbers() {
-        return numbers;
+    public Set<MobileNumber> getMobileNumbers() {
+        return mobileNumbers;
     }
 
-    public void setNumbers(Set<Long> numbers) {
-        this.numbers = numbers;
+    public void setMobileNumbers(Set<MobileNumber> mobileNumbers) {
+        this.mobileNumbers = mobileNumbers;
     }
 
     public String getPassword() {

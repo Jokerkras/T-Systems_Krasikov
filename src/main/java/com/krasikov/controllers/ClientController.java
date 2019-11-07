@@ -4,7 +4,6 @@ import com.krasikov.domain.Client;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.krasikov.service.IClientService;
-
 import java.util.List;
 
 @Controller
