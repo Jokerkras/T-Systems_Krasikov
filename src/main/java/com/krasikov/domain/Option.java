@@ -21,10 +21,10 @@ public class Option {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "possibleOptions")
     @Column(name = "possible_tariffs")
-    private Set<Tariff> possibleTariffs = new HashSet<Tariff>();
+    private Set<Tariff> possibleTariffs = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "options")
-    private Set<ContractForNumber> contractForNumbers = new HashSet<ContractForNumber>();
+    private Set<ContractForNumber> contractForNumbers = new HashSet<>();
 
     public Option(String title, double price, double connectionPrice) {
         this.title = title;

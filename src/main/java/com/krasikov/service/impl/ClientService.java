@@ -4,7 +4,7 @@ import com.krasikov.domain.Client;
 import com.krasikov.dto.ClientDto;
 import com.krasikov.repositories.ClientRepository;
 import com.krasikov.service.IClientService;
-import com.krasikov.wrapper.ClientMapper;
+import com.krasikov.mapper.ClientMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

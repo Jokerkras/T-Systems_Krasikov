@@ -1,4 +1,4 @@
-package com.krasikov.wrapper;
+package com.krasikov.mapper;
 
 import com.krasikov.domain.Client;
 import com.krasikov.dto.ClientDto;
