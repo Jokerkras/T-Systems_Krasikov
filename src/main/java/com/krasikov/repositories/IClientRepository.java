@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface IClientRepository {
     List<Client> getClients();
-    Client getClientById();
+    Client getClientById(Long id);
     void addClient(Client client);
+    void deleteClient(Client client);
 }

@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "CONTRACT")
-public class Contract {
+public class ContractForNumber {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "contract_id")
@@ -32,14 +32,14 @@ public class Contract {
     })
     private Set<Option> options = new HashSet<Option>();
 
-    public Contract(MobileNumber number, Tariff tariff, Client client, Set<Option> options) {
+    public ContractForNumber(MobileNumber number, Tariff tariff, Client client, Set<Option> options) {
         this.number = number;
         this.tariff = tariff;
         this.client = client;
         this.options = options;
     }
 
-    public Contract() { }
+    public ContractForNumber() { }
 
     public void addOption(Option option) {
         options.add(option);

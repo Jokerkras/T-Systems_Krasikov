@@ -1,33 +1,106 @@
 package com.krasikov.repositories;
 
 import com.krasikov.domain.Client;
-import com.krasikov.domain.Option;
-import com.krasikov.utils.HibernateUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.SQLQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class ClientRepository implements IClientRepository{
 
-    private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+    private Session session;
+
+    @Autowired
+    private SessionFactory sessionFactory;
+    private static Logger logger = Logger.getLogger(ClientRepository.class);
 
     @Override
     public List<Client> getClients() {
-        Session session = sessionFactory.openSession();
-        session.close();
-        return null;
+        List<Client> clients = new ArrayList<>();
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            clients = session.createQuery("FROM Client").list();
+            session.getTransaction().commit();
+            logger.info("\nGet list of clients");
+        } catch (Exception e) {
+            if(session.getTransaction() != null) {
+                logger.info("\n Transaction rollbacked");
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if(session != null) {
+                session.close();
+            }
+        }
+        return clients;
     }
 
     @Override
-    public Client getClientById() {
-        return null;
+    public Client getClientById(Long id) {
+        Client client = null;
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            client = session.get(Client.class, id);
+            session.getTransaction().commit();
+            logger.info("\nGet client - " + client.toString());
+        } catch (Exception e) {
+            if(session.getTransaction() != null) {
+                logger.info("\n Transaction rollbacked");
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if(session != null) {
+                session.close();
+            }
+        }
+
+        return client;
     }
 
     @Override
     public void addClient(Client client) {
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.saveOrUpdate(client);
+            session.getTransaction().commit();
+            logger.info("\nAdded CLIENT" + client.toString());
+        } catch (Exception e) {
+            if(session.getTransaction() != null) {
+                logger.info("\n Transaction rollbacked");
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if(session != null) {
+                session.close();
+            }
+        }
+    }
 
+    @Override
+    public void deleteClient(Client client) {
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.delete(client);
+            session.getTransaction().commit();
+            logger.info("\nDelete CLIENT" + client.toString());
+        } catch (Exception e) {
+            if(session.getTransaction() != null) {
+                logger.info("\n Transaction rollbacked");
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if(session != null) {
+                session.close();
+            }
+        }
     }
 }

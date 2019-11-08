@@ -30,7 +30,7 @@ public class Tariff {
     private Set<Option> possibleOptions = new HashSet<Option>();
 
     @OneToMany(mappedBy = "tariff")
-    private Set<Contract> conracts = new HashSet<Contract>();
+    private Set<ContractForNumber> conracts = new HashSet<ContractForNumber>();
 
     public Tariff(String title, double price, HashSet<Option> possibleOptions) {
         this.title = title;

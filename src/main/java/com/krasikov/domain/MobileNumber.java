@@ -11,15 +11,15 @@ public class MobileNumber {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contract_id", referencedColumnName = "contract_id")
-    private Contract contract;
+    private ContractForNumber contractForNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_client")
     private Client client;
 
-    public MobileNumber(Long number, Contract contract, Client client) {
+    public MobileNumber(Long number, ContractForNumber contractForNumber, Client client) {
         this.number = number;
-        this.contract = contract;
+        this.contractForNumber = contractForNumber;
         this.client = client;
     }
 
@@ -29,12 +29,12 @@ public class MobileNumber {
         return number;
     }
 
-    public Contract getContract() {
-        return contract;
+    public ContractForNumber getContractForNumber() {
+        return contractForNumber;
     }
 
-    public void setContract(Contract contract) {
-        this.contract = contract;
+    public void setContractForNumber(ContractForNumber contractForNumber) {
+        this.contractForNumber = contractForNumber;
     }
 
     public Client getClient() {

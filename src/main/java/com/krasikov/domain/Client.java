@@ -29,7 +29,7 @@ public class Client {
     private Set<MobileNumber> mobileNumbers = new HashSet<>();
 
     @OneToMany(mappedBy = "client")
-    private Set<Contract> contracts = new HashSet<>();
+    private Set<ContractForNumber> contractForNumbers = new HashSet<>();
 
     private String password;
 

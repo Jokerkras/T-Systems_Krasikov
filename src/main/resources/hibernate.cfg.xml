@@ -4,7 +4,7 @@
 <hibernate-configuration>
     <session-factory>
         <property name = "hibernate.dialect">org.hibernate.dialect.PostgreSQL82Dialect</property>
-        <property name = "hbm2ddl.auto">update</property>
+        <property name = "hbm2ddl.auto">validate</property>
         <property name = "hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name = "hibernate.connection.url">jdbc:postgresql://localhost:5432/background</property>
         <property name = "hibernate.connection.username">jokerkras</property>
@@ -12,7 +12,7 @@
         <property name = "show_sql">true</property>
 
         <mapping class="com.krasikov.domain.Client"/>
-        <mapping class="com.krasikov.domain.Contract"/>
+        <mapping class="com.krasikov.domain.ContractForNumber"/>
         <mapping class="com.krasikov.domain.MobileNumber"/>
         <mapping class="com.krasikov.domain.Option"/>
         <mapping class="com.krasikov.domain.Tariff"/>
