@@ -2,6 +2,7 @@ package com.krasikov.dto;
 
 import com.krasikov.domain.Client;
 import com.krasikov.domain.MobileNumber;
+import org.mapstruct.Mapping;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ public class ClientDto implements Serializable {
     private String email;
     private String passport;
     private String address;
-    private Set<MobileNumber> numbers = new HashSet<>();
+    private Set<MobileNumber> mobileNumbers = new HashSet<>();
     private String password;
 
     public ClientDto(Client client) {
@@ -25,18 +26,18 @@ public class ClientDto implements Serializable {
         email = client.getEmail();
         passport = client.getPassport();
         address = client.getAddress();
-        numbers = client.getMobileNumbers();
+        mobileNumbers = client.getMobileNumbers();
         passport = client.getPassword();
     }
 
-    public ClientDto(String name, String surname, LocalDate birthday, String email, String passport, String address, Set<MobileNumber> numbers, String password) {
+    public ClientDto(String name, String surname, LocalDate birthday, String email, String passport, String address, Set<MobileNumber> mobileNumbers, String password) {
         this.name = name;
         this.surname = surname;
         this.birthday = birthday;
         this.email = email;
         this.passport = passport;
         this.address = address;
-        this.numbers = numbers;
+        this.mobileNumbers = mobileNumbers;
         this.password = password;
     }
 
@@ -90,12 +91,12 @@ public class ClientDto implements Serializable {
         this.address = address;
     }
 
-    public Set<MobileNumber> getNumbers() {
-        return numbers;
+    public Set<MobileNumber> getMobileNumbers() {
+        return mobileNumbers;
     }
 
-    public void setNumbers(Set<MobileNumber> numbers) {
-        this.numbers = numbers;
+    public void setMobileNumbers(Set<MobileNumber> mobileNumbers) {
+        this.mobileNumbers = mobileNumbers;
     }
 
     public String getPassword() {

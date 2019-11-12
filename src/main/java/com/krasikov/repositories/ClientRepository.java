@@ -19,6 +19,7 @@ public class ClientRepository implements IClientRepository{
     private SessionFactory sessionFactory;
     private static Logger logger = Logger.getLogger(ClientRepository.class);
 
+
     @Override
     public List<Client> getClients() {
         List<Client> clients = new ArrayList<>();
@@ -45,14 +46,15 @@ public class ClientRepository implements IClientRepository{
     public Client getClientById(Long id) {
         Client client = null;
         try {
-            session = sessionFactory.openSession();
+            //TODO настротить transaction manager => далее работа с аннотациямиы
+            session = sessionFactory.openSession(); //TODO getCurrentSession and remove transactions, delete try block
             session.beginTransaction();
-            client = session.get(Client.class, id);
+            client = (Client) session.createQuery("from Client c where c.id = " + id).getSingleResult();//TODO Creteria API or HQL и с чем проще пагинация
             session.getTransaction().commit();
-            logger.info("\nGet client - " + client.toString());
+            //logger.info("\nGet client - " + client.toString());
         } catch (Exception e) {
             if(session.getTransaction() != null) {
-                logger.info("\n Transaction rollbacked");
+                //logger.info("\n Transaction rollbacked");
                 session.getTransaction().rollback();
             }
         } finally {

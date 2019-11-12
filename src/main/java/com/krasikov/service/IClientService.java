@@ -6,7 +6,7 @@ import com.krasikov.dto.ClientDto;
 import java.util.List;
 
 public interface IClientService {
-    Client getClientBuId(long id);
+    ClientDto getClientBuId(long id);
 
     List<ClientDto> getClients();
 

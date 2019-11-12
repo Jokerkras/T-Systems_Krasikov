@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//TODO Transaction
 @Service
 public class ClientService implements IClientService {
 
@@ -20,8 +22,8 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public Client getClientBuId(long id) {
-        return repo.getClientById(id);
+    public ClientDto getClientBuId(long id) {
+        return ClientMapper.INSTANCE.clientToClientDto(repo.getClientById(id));
     }
 
     @Override

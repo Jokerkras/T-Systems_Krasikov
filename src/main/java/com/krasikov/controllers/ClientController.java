@@ -6,10 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.krasikov.service.IClientService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
+@CrossOrigin
 @RequestMapping("/api/client")
 public class ClientController {
 
@@ -28,7 +28,7 @@ public class ClientController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
     @ResponseBody
-    public Client getClientById(@PathVariable Long id) {
+    public ClientDto getClientById(@PathVariable Long id) {
         return clientService.getClientBuId(id);
     }
 
