@@ -9,6 +9,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import java.util.List;
@@ -18,6 +21,7 @@ import static org.hibernate.cfg.Environment.*;
 
 @Configuration
 @PropertySource("classpath:application.properties")
+@EnableWebMvc
 @ComponentScan("com.krasikov")
 public class WebConfig extends WebMvcConfigurationSupport {
 
