@@ -1,6 +1,7 @@
 package com.krasikov.repositories;
 
 import com.krasikov.domain.Client;
+import com.krasikov.domain.MobileNumber;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,86 +24,33 @@ public class ClientRepository implements IClientRepository{
     @Override
     public List<Client> getClients() {
         List<Client> clients = new ArrayList<>();
-        try {
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            clients = session.createQuery("FROM Client").list();
-            session.getTransaction().commit();
-            logger.info("\nGet list of clients");
-        } catch (Exception e) {
-            if(session.getTransaction() != null) {
-                logger.info("\n Transaction rollbacked");
-                session.getTransaction().rollback();
-            }
-        } finally {
-            if(session != null) {
-                session.close();
-            }
-        }
+        session = sessionFactory.getCurrentSession();
+        clients = session.createQuery("FROM Client").list();
+        logger.info("\nGet list of clients");
         return clients;
     }
 
     @Override
     public Client getClientById(Long id) {
         Client client = null;
-        try {
-            //TODO настротить transaction manager => далее работа с аннотациямиы
-            session = sessionFactory.openSession(); //TODO getCurrentSession and remove transactions, delete try block
-            session.beginTransaction();
-            client = (Client) session.createQuery("from Client c where c.id = " + id).getSingleResult();//TODO Creteria API or HQL и с чем проще пагинация
-            session.getTransaction().commit();
-            //logger.info("\nGet client - " + client.toString());
-        } catch (Exception e) {
-            if(session.getTransaction() != null) {
-                //logger.info("\n Transaction rollbacked");
-                session.getTransaction().rollback();
-            }
-        } finally {
-            if(session != null) {
-                session.close();
-            }
-        }
-
+        //TODO настротить transaction manager => далее работа с аннотациямиы
+        session = sessionFactory.getCurrentSession(); //TODO getCurrentSession and remove transactions, delete try block
+        client = (Client) session.createQuery("from Client c where c.id = " + id).getSingleResult();//TODO Creteria API or HQL и с чем проще пагинация
+        //logger.info("\nGet client - " + client.toString());
         return client;
     }
 
     @Override
     public void addClient(Client client) {
-        try {
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            session.saveOrUpdate(client);
-            session.getTransaction().commit();
-            logger.info("\nAdded CLIENT" + client.toString());
-        } catch (Exception e) {
-            if(session.getTransaction() != null) {
-                logger.info("\n Transaction rollbacked");
-                session.getTransaction().rollback();
-            }
-        } finally {
-            if(session != null) {
-                session.close();
-            }
-        }
+        session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(client);
+        logger.info("\nAdded CLIENT" + client.toString());
     }
 
     @Override
     public void deleteClient(Client client) {
-        try {
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            session.delete(client);
-            session.getTransaction().commit();
-            logger.info("\nDelete CLIENT" + client.toString());
-        } catch (Exception e) {
-            if(session.getTransaction() != null) {
-                logger.info("\n Transaction rollbacked");
-                session.getTransaction().rollback();
-            }
-        } finally {
-            if(session != null) {
-                session.close();
-            }
-        }
+        session = sessionFactory.getCurrentSession();
+        session.delete(client);
+        logger.info("\nDelete CLIENT" + client.toString());
     }
 }

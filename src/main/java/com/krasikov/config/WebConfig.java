@@ -3,17 +3,21 @@ package com.krasikov.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.krasikov.domain.*;
+import org.apache.commons.dbcp.BasicDataSource;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Properties;
 
@@ -22,6 +26,7 @@ import static org.hibernate.cfg.Environment.*;
 @Configuration
 @PropertySource("classpath:application.properties")
 @EnableWebMvc
+@EnableTransactionManagement
 @ComponentScan("com.krasikov")
 public class WebConfig extends WebMvcConfigurationSupport {
 
@@ -32,23 +37,38 @@ public class WebConfig extends WebMvcConfigurationSupport {
     public LocalSessionFactoryBean getSessionFactory() {
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
 
-        Properties props = new Properties();
-
-        // Setting JDBC properties
-        props.put(DIALECT, env.getProperty("hibernate.dialect"));
-        props.put(DRIVER, env.getProperty("hibernate.connection.driver_class"));
-        props.put(URL, env.getProperty("hibernate.connection.url"));
-        props.put(USER, env.getProperty("hibernate.connection.username"));
-        props.put(PASS, env.getProperty("hibernate.connection.password"));
-
-        // Setting Hibernate properties
-        props.put(SHOW_SQL, env.getProperty("show_sql"));
-        props.put(HBM2DDL_AUTO, env.getProperty("hbm2ddl.auto"));
-
-        factoryBean.setHibernateProperties(props);
-        factoryBean.setAnnotatedClasses(Client.class, ContractForNumber.class, MobileNumber.class, Option.class, Tariff.class, Worker.class);
+        factoryBean.setDataSource(restDataSource());
+        factoryBean.setPackagesToScan(new String[] {"com.krasikov.domain"});
+        factoryBean.setHibernateProperties(hibernateProperties());
 
         return factoryBean;
+    }
+
+
+    @Bean
+    public DataSource restDataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName(env.getProperty("hibernate.connection.driver_class"));
+        dataSource.setUrl(env.getProperty("hibernate.connection.url"));
+        dataSource.setUsername(env.getProperty("hibernate.connection.username"));
+        dataSource.setPassword(env.getProperty("hibernate.connection.password"));
+
+        return dataSource;
+    }
+
+    Properties hibernateProperties() {
+        return new Properties() {
+            {
+                setProperty("hibernate.hbm2ddl.auto",
+                        env.getProperty("hbm2ddl.auto"));
+                setProperty("hibernate.dialect",
+                        env.getProperty("hibernate.dialect"));
+                setProperty("hibernate.show_sql",
+                        env.getProperty("show_sql"));
+                setProperty("hibernate.globally_quoted_identifiers",
+                        "true");
+            }
+        };
     }
 
     @Override
@@ -61,5 +81,17 @@ public class WebConfig extends WebMvcConfigurationSupport {
             }
         });
         super.configureMessageConverters(converters);
+    }
+
+    @Bean
+    @Autowired
+    public HibernateTransactionManager transactionManager(
+            SessionFactory sessionFactory) {
+
+        HibernateTransactionManager txManager
+                = new HibernateTransactionManager();
+        txManager.setSessionFactory(sessionFactory);
+
+        return txManager;
     }
 }

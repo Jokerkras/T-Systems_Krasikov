@@ -6,13 +6,14 @@ import com.krasikov.repositories.ClientRepository;
 import com.krasikov.service.IClientService;
 import com.krasikov.mapper.ClientMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-//TODO Transaction
 @Service
+@Transactional
 public class ClientService implements IClientService {
 
     private ClientRepository repo;
